@@ -1,0 +1,84 @@
+# Tendermint KMS configuration file
+### One chain with 4 validators
+
+## Signing Provider Configuration
+
+### PKCS11 HSM Provider Configuration
+
+#### FX
+[[providers.p11hsm]]
+##env_module = "FXPKCS11_MODULE" # optional
+module = "/Users/johnz/futurex/fxpkcs11-mac-arm-4.58-422d/libfxpkcs11.dylib"
+env_cfg = "FXPKCS11_CFG"
+cfg = "/Users/johnz/futurex/fxpkcs11-mac-arm-4.58-422d/fxpkcs11.cfg"
+token_label = "Slot Token 0"
+#token_label = "us01crypto01test.virtucrypt.com:"
+user_pin = "safest"
+signing_keys = [
+    { val_ids = ["val-1"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-1/1" },
+#    { val_ids = ["val-2"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-2/1" },
+#    { val_ids = ["val-3"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-3/1" },
+#    { val_ids = ["val-4"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-4/1" },
+]
+
+#### SoftHSM
+[[providers.p11hsm]]
+#env_module = "PKCS11_SOFTHSM2_MODULE" # optional
+module = "/usr/local/lib/softhsm/libsofthsm2.so"
+env_cfg = "SOFTHSM2_CONF"
+cfg = "/etc/softhsm2.conf"
+token_label = "Slot Token 0"
+user_pin = "5678"
+signing_keys = [
+#    { val_ids = ["val-1"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-1/1" },
+    { val_ids = ["val-2"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-2/1" },
+    { val_ids = ["val-3"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-3/1" },
+    { val_ids = ["val-4"], key_type = "consensus", key_label = "Slot Token 0/tmkms/ed25519-4/1" },
+##   { val_ids = ["val-1"], key_type = "consensus", key_label = "Slot Token 0/WIM-test/id-ed25519-hsm-1/2" },
+##   { val_ids = ["val-2"], key_type = "consensus", key_label = "Slot Token 0/WIM-test/id-ed25519-hsm-1/3" },
+##   { val_ids = ["val-3"], key_type = "consensus", key_label = "Slot Token 0/WIM-test/id-ed25519-hsm-1/4" },
+##   { val_ids = ["val-4"], key_type = "consensus", key_label = "Slot Token 0/WIM-test/id-ed25519-hsm-1/5" },
+]
+
+
+## Validator Configuration
+
+[[validator]]
+id = "val-1"
+chain_id = "chain-9"
+addr = "tcp://localhost:1111"
+secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
+key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-1-consensus.json"
+protocol_version = "v0.34"
+reconnect = true
+
+[[validator]]
+id = "val-2"
+chain_id = "chain-9"
+addr = "tcp://localhost:1112"
+secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
+key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-2-consensus.json"
+protocol_version = "v0.34"
+reconnect = true
+
+[[validator]]
+id = "val-3"
+chain_id = "chain-9"
+addr = "tcp://localhost:1113"
+secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
+key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-3-consensus.json"
+protocol_version = "v0.34"
+reconnect = true
+
+[[validator]]
+id = "val-4"
+chain_id = "chain-9"
+addr = "tcp://localhost:1114"
+secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
+key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-4-consensus.json"
+protocol_version = "v0.34"
+reconnect = true
