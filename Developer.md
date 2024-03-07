@@ -23,7 +23,7 @@ git fetch upstream
 # ref: https://docs.github.com/en/repositories/creating-and-managing-repositories/duplicating-a-repository
 # ref: https://git-scm.com/docs/git-clone#Documentation/git-clone.txt---mirror
 ```
-## Major files that are affected
+## Major files that are affected for the p11hsm feature
 - [Cargo.toml](Cargo.toml)
 - [Cargo.lock](Cargo.lock)
 - [lib.rs](src/lib.rs)
@@ -38,6 +38,11 @@ git fetch upstream
 - [template p11hsm.toml](src/commands/init/templates/keyring/p11hsm.toml)
 - [test pkcs11.rs](tests/pkcs11.rs)
 - 
+
+## Validator-centric data model
+- This change affected almost all files. 
+- After the data model change, only softsign and p11hsm features are supported.
+- Other features could be supported if necessary but testing is difficult. 
 
 ## Build tmkms binary
 ```shell
@@ -172,29 +177,84 @@ cargo build --release --features=p11hsm --target-dir ./target-p11-val-cli
 
 # p11hsm diag cli
 ./target-p11-val-cli/release/tmkms p11hsm diag --help
+
+./target-p11-val-cli/release/tmkms p11hsm diag p11context -h
 ./target-p11-val-cli/release/tmkms p11hsm diag p11context -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag p11context -i softhsm -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag p11context -i futurex -c ./.tmkms-p11-val-all/tmkms.toml
+
+./target-p11-val-cli/release/tmkms p11hsm diag slotcount -h
 ./target-p11-val-cli/release/tmkms p11hsm diag slotcount -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag slotcount -i softhsm -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag slotcount -i futurex -c ./.tmkms-p11-val-all/tmkms.toml
+
+./target-p11-val-cli/release/tmkms p11hsm diag slotinfo -h
 ./target-p11-val-cli/release/tmkms p11hsm diag slotinfo -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag slotinfo -i softhsm -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag slotinfo -i futurex -c ./.tmkms-p11-val-all/tmkms.toml
+
+./target-p11-val-cli/release/tmkms p11hsm diag login -h
 ./target-p11-val-cli/release/tmkms p11hsm diag login -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag login -i softhsm -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm diag login -i futurex -c ./.tmkms-p11-val-all/tmkms.toml
 
 # p11hsm keys cli
 ./target-p11-val-cli/release/tmkms p11hsm keys --help
+
 ./target-p11-val-cli/release/tmkms p11hsm keys pubkey --help
+./target-p11-val-cli/release/tmkms p11hsm keys pubkey -l "Slot Token 0/tmkms/ed25519-1/1" -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm keys pubkey -i futurex -t "Slot Token 0" -l "Slot Token 0/tmkms/ed25519-1/1" -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm keys pubkey -i futurex -t "Slot Token 1" -l "Slot Token 0/tmkms/ed25519-1/8" -c ./.tmkms-p11-val-all/tmkms.toml
+
 ./target-p11-val-cli/release/tmkms p11hsm keys generate --help
+./target-p11-val-cli/release/tmkms p11hsm keys generate -l "Slot Token 0/tmkms/ed25519-1/1" -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm keys generate -i futurex -t "Slot Token 0" -l "Slot Token 0/tmkms/ed25519-1/1" -c ./.tmkms-p11-val-all/tmkms.toml
+
+
 ./target-p11-val-cli/release/tmkms p11hsm keys sign-verify --help
 
-./target-p11-val-cli/release/tmkms p11hsm keys pubkey -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1"
-./target-p11-val-cli/release/tmkms p11hsm keys generate -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1"
-./target-p11-val-cli/release/tmkms p11hsm keys sign-verify -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1"
-./target-p11-val-cli/release/tmkms p11hsm keys sign-verify -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1" -m "hello world"
+./target-p11-val-cli/release/tmkms p11hsm keys sign-verify -l "Slot Token 0/tmkms/ed25519-1/1" -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm keys sign-verify -l "Slot Token 0/tmkms/ed25519-1/1" -m "hello world" -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli/release/tmkms p11hsm keys sign-verify -i futurex -t "Slot Token 0" -l "Slot Token 0/tmkms/ed25519-1/1" -m "hello world" -c ./.tmkms-p11-val-all/tmkms.toml
 
 # start tmkms
 ./target-p11-val-cli/release/tmkms start -c ./.tmkms-p11-val-all/tmkms.toml
 ```
 
+### features=p11hsm, validator-only, 1 chain with many validators and cli, debug cli diag
+```shell
+cargo build --release --features=p11hsm --target-dir ./target-p11-val-cli-diag
+# binary tmkms is created in ./target-p11-val-cli-diag/release
+
+# p11hsm cli
+./target-p11-val-cli-diag/release/tmkms p11hsm --help
+
+# p11hsm diag cli
+./target-p11-val-cli-diag/release/tmkms p11hsm diag --help
+./target-p11-val-cli-diag/release/tmkms p11hsm diag p11context -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli-diag/release/tmkms p11hsm diag slotcount -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli-diag/release/tmkms p11hsm diag slotinfo -c ./.tmkms-p11-val-all/tmkms.toml
+./target-p11-val-cli-diag/release/tmkms p11hsm diag login -c ./.tmkms-p11-val-all/tmkms.toml
+
+# p11hsm keys cli
+./target-p11-val-cli-diag/release/tmkms p11hsm keys --help
+./target-p11-val-cli-diag/release/tmkms p11hsm keys pubkey --help
+./target-p11-val-cli-diag/release/tmkms p11hsm keys generate --help
+./target-p11-val-cli-diag/release/tmkms p11hsm keys sign-verify --help
+
+./target-p11-val-cli-diag/release/tmkms p11hsm keys pubkey -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1"
+./target-p11-val-cli-diag/release/tmkms p11hsm keys generate -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1"
+./target-p11-val-cli-diag/release/tmkms p11hsm keys sign-verify -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1"
+./target-p11-val-cli-diag/release/tmkms p11hsm keys sign-verify -c ./.tmkms-p11-val-all/tmkms.toml -l "Slot Token 0/tmkms/ed25519-1/1" -m "hello world"
+
+# start tmkms
+./target-p11-val-cli-diag/release/tmkms start -c ./.tmkms-p11-val-all/tmkms.toml
+```
+
+
 ## Cross compile for linux targets on MacOs
 ref: https://betterprogramming.pub/cross-compiling-rust-from-mac-to-linux-7fad5a454ab1
-### musl
+### musl does not support dynamic loading of libpkcs11.so
 ```shell
 rustup target add x86_64-unknown-linux-musl
 brew install FiloSottile/musl-cross/musl-cross
