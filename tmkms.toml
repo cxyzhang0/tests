@@ -40,40 +40,44 @@ hsms = [
 
 [[validator]]
 id = "val-1"
-chain_id = "chain-9"
+chain_id = "chain-11"
 addr = "tcp://localhost:1111"
 secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
 key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+sign_extensions = true # Should vote extensions for this chain be signed? (default: false)
 state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-1-consensus.json"
 protocol_version = "v0.34"
 reconnect = true
 
 [[validator]]
 id = "val-2"
-chain_id = "chain-9"
+chain_id = "chain-11"
 addr = "tcp://localhost:1112"
 secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
 key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+sign_extensions = true # Should vote extensions for this chain be signed? (default: false)
 state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-2-consensus.json"
 protocol_version = "v0.34"
 reconnect = true
 
 [[validator]]
 id = "val-3"
-chain_id = "chain-9"
+chain_id = "chain-11"
 addr = "tcp://localhost:1113"
 secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
 key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+sign_extensions = true # Should vote extensions for this chain be signed? (default: false)
 state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-3-consensus.json"
 protocol_version = "v0.34"
 reconnect = true
 
 [[validator]]
 id = "val-4"
-chain_id = "chain-9"
+chain_id = "chain-11"
 addr = "tcp://localhost:1114"
 secret_key = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/secrets/kms-identity.key"
 key_format = { type = "bech32", account_key_prefix = "wf", consensus_key_prefix = "wf" }
+sign_extensions = true # Should vote extensions for this chain be signed? (default: false)
 state_file = "/Users/johnz/Project/rust/cosmos/tmkms/.tmkms-p11-val-all/state/val-4-consensus.json"
 protocol_version = "v0.34"
 reconnect = true
